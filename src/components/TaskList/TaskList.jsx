@@ -2,13 +2,18 @@ import Task from "../Task";
 
 import "./TaskList.css";
 
-function TaskList({ todos }) {
+function TaskList({ todos, onDeleteTask }) {
   const elements = todos.map((item) => {
     const { id, ...todoData } = item;
 
     return (
       <li key={id}>
-        <Task {...todoData} />
+        <Task
+          {...todoData}
+          onDeleteTask={() => {
+            onDeleteTask(id);
+          }}
+        />
       </li>
     );
   });

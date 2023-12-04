@@ -30,6 +30,21 @@ class App extends Component {
     ],
   };
 
+  deleteTask = (id) => {
+    this.setState(({ todosData }) => {
+      const idx = todosData.findIndex((task) => task.id === id);
+
+      const newTodosData = [
+        ...todosData.slice(0, idx),
+        ...todosData.slice(idx + 1),
+      ];
+
+      return {
+        todosData: newTodosData,
+      };
+    });
+  };
+
   render() {
     return (
       <section className="todoapp">
@@ -38,7 +53,10 @@ class App extends Component {
           <NewTaskForm />
         </header>
         <section className="main">
-          <TaskList todos={this.state.todosData} />
+          <TaskList
+            todos={this.state.todosData}
+            onDeleteTask={this.deleteTask}
+          />
           <Footer />
         </section>
       </section>

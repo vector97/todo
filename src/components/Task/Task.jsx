@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import "./Task.css";
 
-function Task({ title, date }) {
+function Task({ id, title, date, onDeleteTask }) {
   return (
     <div className="view">
       <input className="toggle" type="checkbox" />
@@ -10,7 +10,7 @@ function Task({ title, date }) {
         <span className="created">{formatDistanceToNow(new Date(date))}</span>
       </label>
       <button className="icon icon-edit"></button>
-      <button className="icon icon-destroy"></button>
+      <button className="icon icon-destroy" onClick={onDeleteTask}></button>
     </div>
   );
 }
