@@ -2,7 +2,7 @@ import Task from "../Task";
 
 import "./TaskList.css";
 
-function TaskList({ todos, onDeleteTask }) {
+function TaskList({ todos, onCompleteTask, onDeleteTask }) {
   const elements = todos.map((item) => {
     const { id, ...todoData } = item;
 
@@ -10,6 +10,9 @@ function TaskList({ todos, onDeleteTask }) {
       <li key={id}>
         <Task
           {...todoData}
+          onCompleteTask={() => {
+            onCompleteTask(id);
+          }}
           onDeleteTask={() => {
             onDeleteTask(id);
           }}

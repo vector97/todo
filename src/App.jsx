@@ -30,6 +30,23 @@ class App extends Component {
     ],
   };
 
+  completeTask = (id) => {
+    this.setState(({ todosData }) => {
+      const newTodosData = todosData.map((todo) =>
+        todo.id === id
+          ? {
+              ...todo,
+              done: !todo.done,
+            }
+          : todo
+      );
+
+      return {
+        todosData: newTodosData,
+      };
+    });
+  };
+
   deleteTask = (id) => {
     this.setState(({ todosData }) => {
       const idx = todosData.findIndex((task) => task.id === id);
@@ -55,6 +72,7 @@ class App extends Component {
         <section className="main">
           <TaskList
             todos={this.state.todosData}
+            onCompleteTask={this.completeTask}
             onDeleteTask={this.deleteTask}
           />
           <Footer />
