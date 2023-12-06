@@ -7,27 +7,31 @@ import Footer from "./components/Footer";
 import "./App.css";
 
 class App extends Component {
+  idCount = 0;
+
   state = {
     todosData: [
-      {
-        id: 1,
-        title: "Completed task",
-        date: new Date(),
-        done: true,
-      },
-      {
-        id: 2,
-        title: "Editing task",
-        date: new Date(),
-        done: false,
-      },
-      {
-        id: 3,
-        title: "Active task",
-        date: new Date(),
-        done: false,
-      },
+      this.createTask("Completed task"),
+      this.createTask("Editing task"),
+      this.createTask("Active task"),
     ],
+  };
+
+  createTask(title) {
+    return {
+      id: this.idCount++,
+      title,
+      date: new Date(),
+      done: false,
+    };
+  }
+
+  onAddTask = (title) => {
+    this.setState(({ todosData }) => {
+      return {
+        todosData: [...todosData, this.createTask(title)],
+      };
+    });
   };
 
   completeTask = (id) => {
@@ -67,7 +71,7 @@ class App extends Component {
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <NewTaskForm />
+          <NewTaskForm onAddTask={this.onAddTask} />
         </header>
         <section className="main">
           <TaskList
