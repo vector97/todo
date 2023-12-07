@@ -71,6 +71,16 @@ class App extends Component {
     this.setState({ filter });
   };
 
+  clearCompleted = () => {
+    this.setState(({ todosData }) => {
+      const newTodosData = todosData.filter((todo) => !todo.done);
+
+      return {
+        todosData: newTodosData,
+      };
+    });
+  };
+
   render() {
     console.log(this.state.filter);
     const renderedTasks = this.state.todosData.filter((task) => {
@@ -96,7 +106,11 @@ class App extends Component {
             onCompleteTask={this.completeTask}
             onDeleteTask={this.deleteTask}
           />
-          <Footer filter={this.state.filter} onFilterData={this.onFilterData} />
+          <Footer
+            filter={this.state.filter}
+            onFilterData={this.onFilterData}
+            clearCompleted={this.clearCompleted}
+          />
         </section>
       </section>
     );
