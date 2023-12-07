@@ -15,6 +15,7 @@ class App extends Component {
       this.createTask("Editing task"),
       this.createTask("Active task"),
     ],
+    filter: "all",
   };
 
   createTask(title) {
@@ -66,7 +67,23 @@ class App extends Component {
     });
   };
 
+  onFilterData = (filter) => {
+    this.setState({ filter });
+  };
+
   render() {
+    console.log(this.state.filter);
+    const renderedTasks = this.state.todosData.filter((task) => {
+      if (this.state.filter === "active") {
+        return !task.done;
+      }
+      if (this.state.filter === "completed") {
+        return task.done;
+      }
+
+      return task;
+    });
+
     return (
       <section className="todoapp">
         <header className="header">
@@ -75,11 +92,11 @@ class App extends Component {
         </header>
         <section className="main">
           <TaskList
-            todos={this.state.todosData}
+            todos={renderedTasks}
             onCompleteTask={this.completeTask}
             onDeleteTask={this.deleteTask}
           />
-          <Footer />
+          <Footer filter={this.state.filter} onFilterData={this.onFilterData} />
         </section>
       </section>
     );
