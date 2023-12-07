@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
+
 import "./Task.css";
 
 function Task({ title, date, done, onCompleteTask, onDeleteTask }) {
@@ -12,7 +13,9 @@ function Task({ title, date, done, onCompleteTask, onDeleteTask }) {
       />
       <label>
         <span className="description">{title}</span>
-        <span className="created">{formatDistanceToNow(new Date(date))}</span>
+        <span className="created">
+          created {formatDistanceToNow(new Date(date))} ago
+        </span>
       </label>
       <button className="icon icon-edit"></button>
       <button className="icon icon-destroy" onClick={onDeleteTask}></button>
