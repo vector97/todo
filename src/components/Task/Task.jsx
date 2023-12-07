@@ -1,6 +1,21 @@
+import PropTypes from "prop-types";
 import { formatDistanceToNow } from "date-fns";
 
 import "./Task.css";
+
+Task.defaultProps = {
+  done: false,
+  onCompleteTask: () => {},
+  onDeleteTask: () => {},
+};
+
+Task.propTypes = {
+  title: PropTypes.string.isRequired,
+  date: PropTypes.object.isRequired,
+  done: PropTypes.bool.isRequired,
+  onCompleteTask: PropTypes.func,
+  onDeleteTask: PropTypes.func,
+};
 
 function Task({ title, date, done, onCompleteTask, onDeleteTask }) {
   return (

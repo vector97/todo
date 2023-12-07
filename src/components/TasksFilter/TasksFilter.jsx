@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import "./TasksFilter.css";
 
 const buttonsData = [
@@ -5,6 +7,16 @@ const buttonsData = [
   { title: "Active", name: "active" },
   { title: "Completed", name: "completed" },
 ];
+
+TasksFilter.defaultProps = {
+  filter: "all",
+  onFilterData: () => {},
+};
+
+TasksFilter.propTypes = {
+  filter: PropTypes.oneOf(["all", "active", "completed"]),
+  onFilterData: PropTypes.func,
+};
 
 function TasksFilter({ filter, onFilterData }) {
   const buttons = buttonsData.map(({ title, name }) => {
