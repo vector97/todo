@@ -82,7 +82,8 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state.filter);
+    const tasksCount = this.state.todosData.filter((task) => !task.done).length;
+
     const renderedTasks = this.state.todosData.filter((task) => {
       if (this.state.filter === "active") {
         return !task.done;
@@ -107,6 +108,7 @@ class App extends Component {
             onDeleteTask={this.deleteTask}
           />
           <Footer
+            tasksCount={tasksCount}
             filter={this.state.filter}
             onFilterData={this.onFilterData}
             clearCompleted={this.clearCompleted}
