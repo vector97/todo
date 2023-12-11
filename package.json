@@ -39,8 +39,8 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": "npm run lint:fix",
-    "src/**/*.{js,jsx,html,css}": "npm run format"
+    "src/**/*.{js,jsx}": "lint:fix",
+    "src/**/*.{js,jsx,html,css}": "format"
   },
   "eslintConfig": {
     "extends": [
