@@ -28,8 +28,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix --color",
+    "lint": "eslint src/**/*.{js,jsx}",
+    "lint:fix": "eslint src/**/*.{js,jsx} --fix --color",
     "format": "prettier --write src/",
     "prepare": "husky install"
   },
@@ -39,10 +39,8 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,html,css}": [
-      "npm run lint:fix",
-      "npm run format"
-    ]
+    "src/**/*.{js,jsx}": "npm run lint:fix",
+    "src/**/*.{js,jsx,html,css}": "npm run format"
   },
   "eslintConfig": {
     "extends": [
