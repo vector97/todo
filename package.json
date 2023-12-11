@@ -30,6 +30,7 @@
     "build": "react-scripts build",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix --color",
+    "format": "prettier --write src/",
     "prepare": "husky install"
   },
   "husky": {
@@ -38,8 +39,9 @@
     }
   },
   "lint-staged": {
-    "*.(js|jsx)": [
+    "src/**/*.{js,jsx,html,css}": [
       "npm run lint:fix",
+      "npm run format",
       "git add"
     ]
   },
