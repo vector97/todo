@@ -1,5 +1,5 @@
-import { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Component } from 'react'
 
 import './NewTaskForm.css'
 
@@ -22,8 +22,11 @@ class NewTaskForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.onAddTask(this.state.title)
-    this.setState({ title: '' })
+
+    if (this.state.title.trim()) {
+      this.props.onAddTask(this.state.title)
+      this.setState({ title: '' })
+    }
   }
 
   render() {

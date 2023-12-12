@@ -1,8 +1,8 @@
 import { Component } from 'react'
 
-import NewTaskForm from './components/NewTaskForm'
-import TaskList from './components/TaskList'
-import Footer from './components/Footer'
+import Footer from '../Footer'
+import NewTaskForm from '../NewTaskForm'
+import TaskList from '../TaskList'
 
 import './App.css'
 

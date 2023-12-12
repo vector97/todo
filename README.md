@@ -1,3 +1,3 @@
 # todo
 
-https://todo-6u10pqk07-vector97.vercel.app
+https://todo-lovat-mu-26.vercel.app/
