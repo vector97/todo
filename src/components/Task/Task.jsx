@@ -8,8 +8,13 @@ function Task({ title, date, done, onCompleteTask, onDeleteTask }) {
     <div className="view">
       <input className="toggle" type="checkbox" onChange={onCompleteTask} checked={done} />
       <label>
-        <span className="description">{title}</span>
-        <span className="created">created {formatDistanceToNow(new Date(date))} ago</span>
+        <span className="title">{title}</span>
+        <span className="description">
+          <button className="icon icon-play"></button>
+          <button className="icon icon-pause"></button>
+          12:25
+        </span>
+        <span className="description">created {formatDistanceToNow(new Date(date))} ago</span>
       </label>
       <button className="icon icon-edit" type="button" aria-label="edit task" />
       <button className="icon icon-destroy" type="button" onClick={onDeleteTask} aria-label="delete task" />

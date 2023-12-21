@@ -31,7 +31,7 @@ class NewTaskForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="new-todo-form" onSubmit={this.handleSubmit}>
         <input
           className="new-todo"
           value={this.state.title}
@@ -39,6 +39,8 @@ class NewTaskForm extends Component {
           placeholder="What needs to be done?"
           autoFocus
         />
+        <input className="new-todo-form__timer" placeholder="Min" autoFocus />
+        <input className="new-todo-form__timer" placeholder="Sec" autoFocus />
       </form>
     )
   }
