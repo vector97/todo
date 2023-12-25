@@ -10,23 +10,29 @@ class App extends Component {
   idCount = 0
 
   state = {
-    todosData: [this.createTask('Completed task'), this.createTask('Editing task'), this.createTask('Active task')],
+    todosData: [
+      this.createTask('Completed task', 61),
+      this.createTask('Editing task', 10),
+      this.createTask('Active task', 120),
+    ],
     filter: 'all',
   }
 
-  createTask(title) {
+  createTask(title, timeRemaining) {
     return {
       id: this.idCount++,
       title,
       date: new Date(),
       done: false,
+      timeRemaining,
+      isPlay: false,
     }
   }
 
-  onAddTask = (title) => {
+  onAddTask = (title, timeRemaining) => {
     this.setState(({ todosData }) => {
       return {
-        todosData: [...todosData, this.createTask(title)],
+        todosData: [...todosData, this.createTask(title, timeRemaining)],
       }
     })
   }
@@ -53,6 +59,23 @@ class App extends Component {
       const idx = todosData.findIndex((task) => task.id === id)
 
       const newTodosData = [...todosData.slice(0, idx), ...todosData.slice(idx + 1)]
+
+      return {
+        todosData: newTodosData,
+      }
+    })
+  }
+
+  onTick = (id, timeRemaining) => {
+    this.setState(({ todosData }) => {
+      const newTodosData = todosData.map((todo) =>
+        todo.id === id
+          ? {
+              ...todo,
+              timeRemaining,
+            }
+          : todo,
+      )
 
       return {
         todosData: newTodosData,
@@ -94,8 +117,15 @@ class App extends Component {
           <h1>todos</h1>
           <NewTaskForm onAddTask={this.onAddTask} />
         </header>
+
         <section className="main">
-          <TaskList todos={renderedTasks} onCompleteTask={this.completeTask} onDeleteTask={this.deleteTask} />
+          <TaskList
+            todos={renderedTasks}
+            onCompleteTask={this.completeTask}
+            onDeleteTask={this.deleteTask}
+            onTick={this.onTick}
+          />
+
           <Footer
             tasksCount={tasksCount}
             filter={this.state.filter}

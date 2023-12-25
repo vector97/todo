@@ -38,3 +38,10 @@
   width: 15%;
   padding-left: 16px;
 }
+
+.new-todo-form__timer::-webkit-outer-spin-button,
+.new-todo-form__timer::-webkit-inner-spin-button {
+  display: none;
+  -webkit-appearance: none;
+  margin: 0;
+}

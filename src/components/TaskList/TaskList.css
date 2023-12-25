@@ -141,6 +141,10 @@
   font-size: 15px;
 }
 
+.todo-list li .icon-pause {
+  margin-right: 10px;
+}
+
 .icon-pause:after {
   content: '⏸';
 }

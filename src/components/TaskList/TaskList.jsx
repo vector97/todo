@@ -4,7 +4,7 @@ import Task from '../Task'
 
 import './TaskList.css'
 
-function TaskList({ todos, onCompleteTask, onDeleteTask }) {
+function TaskList({ todos, onCompleteTask, onDeleteTask, onTick }) {
   const elements = todos.map((item) => {
     const { id, ...todoData } = item
 
@@ -17,6 +17,9 @@ function TaskList({ todos, onCompleteTask, onDeleteTask }) {
           }}
           onDeleteTask={() => {
             onDeleteTask(id)
+          }}
+          onTick={(timeRemaining) => {
+            onTick(id, timeRemaining)
           }}
         />
       </li>
