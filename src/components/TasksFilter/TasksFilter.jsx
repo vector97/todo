@@ -2,6 +2,16 @@ import PropTypes from 'prop-types'
 
 import './TasksFilter.css'
 
+TasksFilter.propTypes = {
+  filter: PropTypes.oneOf(['all', 'active', 'completed']),
+  onFilterData: PropTypes.func,
+}
+
+TasksFilter.defaultProps = {
+  filter: 'all',
+  onFilterData: () => {},
+}
+
 const buttonsData = [
   { title: 'All', name: 'all' },
   { title: 'Active', name: 'active' },
@@ -20,16 +30,6 @@ function TasksFilter({ filter, onFilterData }) {
   })
 
   return <ul className="filters">{buttons}</ul>
-}
-
-TasksFilter.defaultProps = {
-  filter: 'all',
-  onFilterData: () => {},
-}
-
-TasksFilter.propTypes = {
-  filter: PropTypes.oneOf(['all', 'active', 'completed']),
-  onFilterData: PropTypes.func,
 }
 
 export default TasksFilter

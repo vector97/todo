@@ -1,117 +1,78 @@
 import { formatDistanceToNow } from 'date-fns'
 import PropTypes from 'prop-types'
-import { Component } from 'react'
+import { useEffect, useState } from 'react'
+
+import transformTime from '../../helpers/transformTime'
 
 import './Task.css'
 
-class Task extends Component {
-  static defaultProps = {
-    done: false,
-    onCompleteTask: () => {},
-    onDeleteTask: () => {},
-  }
+Task.propTypes = {
+  title: PropTypes.string.isRequired,
+  date: PropTypes.object.isRequired,
+  done: PropTypes.bool,
+  timeRemaining: PropTypes.number.isRequired,
+  isPlay: PropTypes.bool,
+  onCompleteTask: PropTypes.func,
+  onDeleteTask: PropTypes.func,
+  onTick: PropTypes.func,
+}
 
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    date: PropTypes.object.isRequired,
-    done: PropTypes.bool,
-    onCompleteTask: PropTypes.func,
-    onDeleteTask: PropTypes.func,
-  }
+Task.defaultProps = {
+  title: 'Task Title',
+  done: false,
+  timeRemaining: 0,
+  isPlay: false,
+  onCompleteTask: () => {},
+  onDeleteTask: () => {},
+  onTick: () => {},
+}
 
-  state = {}
+function Task(props) {
+  const { title, date, done, onCompleteTask, onDeleteTask, onTick } = props
 
-  componentDidMount() {
-    const { timeRemaining, isPlay } = this.props
+  const [timeRemaining, setTimeRemaining] = useState(props.timeRemaining)
+  const [isPlay, setIsPlay] = useState(props.isPlay)
 
-    this.setState({ timeRemaining, isPlay })
-  }
+  const time = transformTime(timeRemaining)
 
-  componentWillUnmount() {
-    const { onTick } = this.props
-    const { timeRemaining } = this.state
+  useEffect(() => {
+    const interval = setInterval(() => {
+      isPlay && setTimeRemaining((t) => (t >= 1 ? t - 1 : 0))
+    }, 1000)
 
-    clearTimeout(this.timer)
-    onTick(timeRemaining)
-  }
-
-  onPlayHandler = () => {
-    const { isPlay } = this.state
-
-    if (!isPlay) {
-      this.setState({ isPlay: true })
-      this.tick()
+    if (timeRemaining === 0) {
+      setIsPlay(false)
     }
-  }
 
-  onPauseHandler = () => {
-    const { isPlay } = this.state
-
-    if (isPlay) {
-      this.setState({ isPlay: false })
-      clearTimeout(this.timer)
+    return () => {
+      clearInterval(interval)
+      onTick(timeRemaining)
     }
-  }
+  }, [isPlay, timeRemaining])
 
-  tick = () => {
-    const { timeRemaining } = this.state
+  const onPlayHandler = () => setIsPlay(true)
+  const onPauseHandler = () => setIsPlay(false)
 
-    if (timeRemaining >= 1) {
-      this.setState((state) => {
-        return {
-          ...state,
-          timeRemaining: state.timeRemaining - 1,
-        }
-      })
+  return (
+    <div className="view">
+      <input className="toggle" type="checkbox" onChange={onCompleteTask} checked={done} />
 
-      this.timer = setTimeout(this.tick, 1000)
-    } else {
-      this.setState({ isPlay: false })
-      clearTimeout(this.timer)
-    }
-  }
+      <label>
+        <span className="title">{title}</span>
 
-  transformTime = (time) => {
-    const min = Math.trunc(time / 60)
-    const sec = time % 60
+        <span className="description">
+          <button className="icon icon-play" onClick={onPlayHandler}></button>
+          <button className="icon icon-pause" onClick={onPauseHandler}></button>
+          {time}
+        </span>
 
-    return `${this.formatTime(min)} : ${this.formatTime(sec)}`
-  }
+        <span className="description">created {formatDistanceToNow(new Date(date))} ago</span>
+      </label>
 
-  formatTime = (time) => {
-    if (time < 10) {
-      return `0${time}`
-    } else {
-      return time
-    }
-  }
-
-  render() {
-    const { title, date, done, onCompleteTask, onDeleteTask } = this.props
-    const { timeRemaining } = this.state
-    const timer = this.transformTime(timeRemaining)
-
-    return (
-      <div className="view">
-        <input className="toggle" type="checkbox" onChange={onCompleteTask} checked={done} />
-
-        <label>
-          <span className="title">{title}</span>
-
-          <span className="description">
-            <button className="icon icon-play" onClick={this.onPlayHandler}></button>
-            <button className="icon icon-pause" onClick={this.onPauseHandler}></button>
-            {timer}
-          </span>
-
-          <span className="description">created {formatDistanceToNow(new Date(date))} ago</span>
-        </label>
-
-        <button className="icon icon-edit" type="button" aria-label="edit task" />
-        <button className="icon icon-destroy" type="button" onClick={onDeleteTask} aria-label="delete task" />
-      </div>
-    )
-  }
+      <button className="icon icon-edit" type="button" aria-label="edit task" />
+      <button className="icon icon-destroy" type="button" onClick={onDeleteTask} aria-label="delete task" />
+    </div>
+  )
 }
 
 export default Task

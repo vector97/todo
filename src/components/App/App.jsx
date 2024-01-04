@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { useState } from 'react'
 
 import Footer from '../Footer'
 import NewTaskForm from '../NewTaskForm'
@@ -6,21 +6,21 @@ import TaskList from '../TaskList'
 
 import './App.css'
 
-class App extends Component {
-  idCount = 0
+let nextId = 1
 
-  state = {
-    todosData: [
-      this.createTask('Completed task', 61),
-      this.createTask('Editing task', 10),
-      this.createTask('Active task', 120),
-    ],
-    filter: 'all',
-  }
+function App() {
+  const initialTodos = [
+    createTask('Completed task', 61),
+    createTask('Editing task', 10),
+    createTask('Active task', 120),
+  ]
 
-  createTask(title, timeRemaining) {
+  const [todosData, setTodosData] = useState(initialTodos)
+  const [filter, setFilter] = useState('all')
+
+  function createTask(title, timeRemaining) {
     return {
-      id: this.idCount++,
+      id: nextId++,
       title,
       date: new Date(),
       done: false,
@@ -29,113 +29,69 @@ class App extends Component {
     }
   }
 
-  onAddTask = (title, timeRemaining) => {
-    this.setState(({ todosData }) => {
-      return {
-        todosData: [...todosData, this.createTask(title, timeRemaining)],
-      }
-    })
-  }
+  const onAddTask = (title, timeRemaining) => setTodosData([...todosData, createTask(title, timeRemaining)])
 
-  completeTask = (id) => {
-    this.setState(({ todosData }) => {
-      const newTodosData = todosData.map((todo) =>
-        todo.id === id
+  const completeTask = (id) => {
+    setTodosData(
+      todosData.map((t) =>
+        t.id === id
           ? {
-              ...todo,
-              done: !todo.done,
+              ...t,
+              done: !t.done,
             }
-          : todo,
-      )
-
-      return {
-        todosData: newTodosData,
-      }
-    })
-  }
-
-  deleteTask = (id) => {
-    this.setState(({ todosData }) => {
-      const idx = todosData.findIndex((task) => task.id === id)
-
-      const newTodosData = [...todosData.slice(0, idx), ...todosData.slice(idx + 1)]
-
-      return {
-        todosData: newTodosData,
-      }
-    })
-  }
-
-  onTick = (id, timeRemaining) => {
-    this.setState(({ todosData }) => {
-      const newTodosData = todosData.map((todo) =>
-        todo.id === id
-          ? {
-              ...todo,
-              timeRemaining,
-            }
-          : todo,
-      )
-
-      return {
-        todosData: newTodosData,
-      }
-    })
-  }
-
-  onFilterData = (filter) => {
-    this.setState({ filter })
-  }
-
-  clearCompleted = () => {
-    this.setState(({ todosData }) => {
-      const newTodosData = todosData.filter((todo) => !todo.done)
-
-      return {
-        todosData: newTodosData,
-      }
-    })
-  }
-
-  render() {
-    const tasksCount = this.state.todosData.filter((task) => !task.done).length
-
-    const renderedTasks = this.state.todosData.filter((task) => {
-      if (this.state.filter === 'active') {
-        return !task.done
-      }
-      if (this.state.filter === 'completed') {
-        return task.done
-      }
-
-      return task
-    })
-
-    return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>todos</h1>
-          <NewTaskForm onAddTask={this.onAddTask} />
-        </header>
-
-        <section className="main">
-          <TaskList
-            todos={renderedTasks}
-            onCompleteTask={this.completeTask}
-            onDeleteTask={this.deleteTask}
-            onTick={this.onTick}
-          />
-
-          <Footer
-            tasksCount={tasksCount}
-            filter={this.state.filter}
-            onFilterData={this.onFilterData}
-            clearCompleted={this.clearCompleted}
-          />
-        </section>
-      </section>
+          : t,
+      ),
     )
   }
+
+  const deleteTask = (taskId) => setTodosData(todosData.filter((t) => t.id !== taskId))
+
+  const clearCompleted = () => setTodosData(todosData.filter((t) => !t.done))
+
+  const onTick = (id, timeRemaining) => {
+    setTodosData((todosData) => {
+      const newTodosData = todosData.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              timeRemaining,
+            }
+          : t,
+      )
+
+      return newTodosData
+    })
+  }
+
+  const onFilterData = (filter) => setFilter(filter)
+
+  const tasksCount = todosData.filter((t) => !t.done).length
+
+  const renderedTasks = todosData.filter((t) => {
+    if (filter === 'active') {
+      return !t.done
+    }
+    if (filter === 'completed') {
+      return t.done
+    }
+
+    return t
+  })
+
+  return (
+    <section className="todoapp">
+      <header className="header">
+        <h1>todos</h1>
+        <NewTaskForm onAddTask={onAddTask} />
+      </header>
+
+      <section className="main">
+        <TaskList todos={renderedTasks} onCompleteTask={completeTask} onDeleteTask={deleteTask} onTick={onTick} />
+
+        <Footer tasksCount={tasksCount} filter={filter} onFilterData={onFilterData} clearCompleted={clearCompleted} />
+      </section>
+    </section>
+  )
 }
 
 export default App

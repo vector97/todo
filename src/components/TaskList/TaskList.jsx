@@ -4,8 +4,31 @@ import Task from '../Task'
 
 import './TaskList.css'
 
+TaskList.propTypes = {
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      date: PropTypes.object,
+      done: PropTypes.bool,
+      timeRemaining: PropTypes.number,
+      isPlay: PropTypes.bool,
+    }),
+  ),
+  onCompleteTask: PropTypes.func,
+  onDeleteTask: PropTypes.func,
+  onTick: PropTypes.func,
+}
+
+TaskList.defaultProps = {
+  todos: [],
+  onCompleteTask: () => {},
+  onDeleteTask: () => {},
+  onTick: () => {},
+}
+
 function TaskList({ todos, onCompleteTask, onDeleteTask, onTick }) {
-  const elements = todos.map((item) => {
+  const tasks = todos.map((item) => {
     const { id, ...todoData } = item
 
     return (
@@ -26,26 +49,7 @@ function TaskList({ todos, onCompleteTask, onDeleteTask, onTick }) {
     )
   })
 
-  return <ul className="todo-list">{elements}</ul>
-}
-
-TaskList.defaultProps = {
-  todos: [],
-  onCompleteTask: () => {},
-  onDeleteTask: () => {},
-}
-
-TaskList.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      title: PropTypes.string,
-      date: PropTypes.object,
-      done: PropTypes.bool,
-    }),
-  ),
-  onCompleteTask: PropTypes.func,
-  onDeleteTask: PropTypes.func,
+  return <ul className="todo-list">{tasks}</ul>
 }
 
 export default TaskList
