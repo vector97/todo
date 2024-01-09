@@ -23,7 +23,7 @@ function NewTaskForm({ onAddTask }) {
   const handleChange = ({ target }) => {
     const { name, value } = target
 
-    setTaskData({ ...taskData, [name]: value })
+    setTaskData((taskData) => ({ ...taskData, [name]: value }))
   }
 
   const onKeyPress = (e) => {

@@ -29,10 +29,11 @@ function App() {
     }
   }
 
-  const onAddTask = (title, timeRemaining) => setTodosData([...todosData, createTask(title, timeRemaining)])
+  const onAddTask = (title, timeRemaining) =>
+    setTodosData((todosData) => [...todosData, createTask(title, timeRemaining)])
 
   const completeTask = (id) => {
-    setTodosData(
+    setTodosData((todosData) =>
       todosData.map((t) =>
         t.id === id
           ? {
@@ -44,23 +45,21 @@ function App() {
     )
   }
 
-  const deleteTask = (taskId) => setTodosData(todosData.filter((t) => t.id !== taskId))
+  const deleteTask = (taskId) => setTodosData((todosData) => todosData.filter((t) => t.id !== taskId))
 
-  const clearCompleted = () => setTodosData(todosData.filter((t) => !t.done))
+  const clearCompleted = () => setTodosData((todosData) => todosData.filter((t) => !t.done))
 
   const onTick = (id, timeRemaining) => {
-    setTodosData((todosData) => {
-      const newTodosData = todosData.map((t) =>
+    setTodosData((todosData) =>
+      todosData.map((t) =>
         t.id === id
           ? {
               ...t,
               timeRemaining,
             }
           : t,
-      )
-
-      return newTodosData
-    })
+      ),
+    )
   }
 
   const onFilterData = (filter) => setFilter(filter)
